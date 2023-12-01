@@ -4,29 +4,20 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.devsuperior.dsmeta.dto.SaleMinDTO;
-import com.devsuperior.dsmeta.entities.Sale;
-import com.devsuperior.dsmeta.projections.SaleProjection;
-import com.devsuperior.dsmeta.repositories.SaleRepository;
+import com.devsuperior.dsmeta.projections.SellerProjection;
+import com.devsuperior.dsmeta.repositories.SellerRepository;
 
 @Service
-public class SaleService {
-
+public class SellerService {
+	
 	@Autowired
-	private SaleRepository repository;
-	
-	public SaleMinDTO findById(Long id) {
-		Optional<Sale> result = repository.findById(id);
-		Sale entity = result.get();
-		return new SaleMinDTO(entity);
-	}
-	
-	public List<SaleProjection> search2(String minDate, String maxDate, String name){
+	private SellerRepository repository;
+
+	public List<SellerProjection> searchName(String minDate, String maxDate){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate max;
 		LocalDate min;
@@ -43,10 +34,8 @@ public class SaleService {
             e.printStackTrace();
             min = max.minusYears(1); 
         }
-        
-		return repository.search1(min,max,name);
-		
+
+        return repository.search1(min, max);
+    }	
 	}
-	
-	
-}
+
